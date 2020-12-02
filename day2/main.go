@@ -37,12 +37,8 @@ func main() {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	if *version == 1 {
-		log.Printf("Result: %d 🎄", checkPasswordPolicy(inputs))
-	}
-	// } else {
-	// 	log.Printf("Result: %d 🎄", calculateAccoutingVersion2(inputs))
-	// }
+
+	log.Printf("Version: %d ,Result: %d 🎄", *version, checkPasswordPolicy(inputs, *version))
 }
 
 type passwordPolicy struct {
@@ -67,6 +63,17 @@ func (p *passwordPolicy) Valid() bool {
 	return true
 }
 
+func (p *passwordPolicy) ValidVersion2() bool {
+	if p.Char == string(p.Password[p.Max-1]) && p.Char != string(p.Password[p.Min-1]) {
+		return true
+	}
+
+	if p.Char == string(p.Password[p.Min-1]) && p.Char != string(p.Password[p.Max-1]) {
+		return true
+	}
+	return false
+}
+
 func parseInput(input string) passwordPolicy {
 
 	regex := *regexp.MustCompile(`([0-9]+)-([0-9]+) (\w): (\w+)`)
@@ -83,12 +90,18 @@ func parseInput(input string) passwordPolicy {
 	}
 }
 
-func checkPasswordPolicy(input []passwordPolicy) int {
+func checkPasswordPolicy(input []passwordPolicy, version int) int {
 
 	valid := 0
 	for _, p := range input {
-		if p.Valid() {
-			valid++
+		if version == 2 {
+			if p.ValidVersion2() {
+				valid++
+			}
+		} else {
+			if p.Valid() {
+				valid++
+			}
 		}
 	}
 
