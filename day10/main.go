@@ -197,21 +197,28 @@ func rPool(p int, n []int, c []int, cc [][]int, minLength int, high int) [][]int
 		return cc
 	}
 	p--
+
 	for i := range n {
 		r := make([]int, len(c)+1)
 		copy(r, c)
+
 		r[len(r)-1] = n[i]
 		if p == 0 {
-
 			if len(r) > minLength && high-r[len(r)-1] < 4 && r[0]-0 < 4 {
 				log.Printf("adding %+v", r)
 				cc = append(cc, r)
 			}
 		}
 
-		if len(r) > 1 && r[len(r)-1]-r[len(r)-2] > 3 {
-			continue
+		if len(r) > 1 {
+			if r[len(r)-1]-r[len(r)-2] > 3 {
+				continue
+			}
+			if r[0]-0 > 3 {
+				continue
+			}
 		}
+
 		cc = rPool(p, n[i+1:], r, cc, minLength, high)
 
 	}
