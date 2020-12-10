@@ -133,7 +133,7 @@ func getCombinitionsPossible(input []int) map[string]bool {
 		findpool++
 	}
 
-	for pool := 1; pool < len(intialTryArr)-1; pool++ {
+	for pool := 1; pool < len(intialTryArr); pool++ {
 		log.Printf("current pool %d", pool)
 		// p := Combinations(intialTryArr[:len(intialTryArr)-1], pool)
 		p := Pool(pool, intialTryArr[:len(intialTryArr)-1], findpool, deviceJolt)
@@ -180,13 +180,6 @@ func getCombinitionsPossible(input []int) map[string]bool {
 				// log.Printf("valid: %d", len(validCombination))
 			}
 		}
-	}
-	// }
-	// 		}
-	// 	}
-	// }
-	for k := range validCombination {
-		log.Print(k)
 	}
 
 	return validCombination
