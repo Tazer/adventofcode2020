@@ -133,8 +133,8 @@ func getCombinitionsPossible(input []int) map[string]bool {
 		findpool++
 	}
 
-	for pool := len(intialTryArr); pool > 0; pool-- {
-		log.Printf("current pool %d", pool)
+	for pool := len(intialTryArr) - 1; pool > 0; pool-- {
+		//log.Printf("current pool %d", pool)
 		// p := Combinations(intialTryArr[:len(intialTryArr)-1], pool)
 		p := Pool(pool, intialTryArr[:len(intialTryArr)-1], findpool, hInput)
 
@@ -212,10 +212,10 @@ func rPool(p int, n []int, c []int, cc [][]int, minLength int, high int) [][]int
 
 		if len(r) > 1 {
 			if r[len(r)-1]-r[len(r)-2] > 3 {
-				continue
+				break
 			}
 			if r[0]-0 > 3 {
-				continue
+				break
 			}
 		}
 
