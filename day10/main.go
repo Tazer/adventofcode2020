@@ -133,10 +133,10 @@ func getCombinitionsPossible(input []int) map[string]bool {
 		findpool++
 	}
 
-	for pool := len(intialTryArr) - 1; pool > 0; pool-- {
-		//log.Printf("current pool %d", pool)
+	for pool := 1; pool < len(intialTryArr)-1; pool++ {
+		log.Printf("current pool %d", pool)
 		// p := Combinations(intialTryArr[:len(intialTryArr)-1], pool)
-		p := Pool(pool, intialTryArr[:len(intialTryArr)-1], findpool, hInput)
+		p := Pool(pool, intialTryArr[:len(intialTryArr)-1], findpool, deviceJolt)
 
 		// skippedStart := 0
 		// skippedSkipEnd := 0
@@ -177,7 +177,7 @@ func getCombinitionsPossible(input []int) map[string]bool {
 					combination += strconv.Itoa(v)
 				}
 				validCombination[combination] = true
-				log.Printf("valid: %d", len(validCombination))
+				// log.Printf("valid: %d", len(validCombination))
 			}
 		}
 	}
@@ -205,7 +205,7 @@ func rPool(p int, n []int, c []int, cc [][]int, minLength int, high int) [][]int
 		r[len(r)-1] = n[i]
 		if p == 0 {
 			if len(r) > minLength && high-r[len(r)-1] < 4 && r[0]-0 < 4 {
-				log.Printf("adding %+v", r)
+				//log.Printf("adding %+v", r)
 				cc = append(cc, r)
 			}
 		}
@@ -217,6 +217,18 @@ func rPool(p int, n []int, c []int, cc [][]int, minLength int, high int) [][]int
 			if r[0]-0 > 3 {
 				break
 			}
+			diff := 0
+			for i, v := range r[1:] {
+				//log.Printf("prev %d , next %d", r[i], v)
+				diff += v - r[i]
+			}
+
+			if diff+((p+1)*3) < high-3 {
+				//log.Printf("breaking %d , %d , sum: %d , high %d , r: %+v", diff, p, diff+((p)*3), high, r)
+				continue
+			}
+
+			//log.Printf("diff: %d whats p: %d, r:%+v , high: %d", diff, p, r, high)
 		}
 
 		cc = rPool(p, n[i+1:], r, cc, minLength, high)
